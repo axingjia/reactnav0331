@@ -73,6 +73,9 @@ export function deleteSequence(node,sequenceArray,oldName){
 
 export function renameSequence(node,sequenceArray,oldName,newName){
 	var currentNode=node;	
+	if(oldName==newName){
+		return node;
+	}
 	if(sequenceArray.length==1){
 		console.log('current inside knarytree',currentNode);
 		console.log("old ",oldName, " new ",newName)
@@ -114,32 +117,17 @@ function appendIndexToNodeName(array,name){
 	var temp_name=name;
 	// console.log("temp_name "+temp_name)
 	while(folderExist(array,temp_name)){
-		console.log("iii "+i);
-		console.log("whilewhile..temp name "+temp_name);
 		var splitString=temp_name.split("_");
-		console.log("splitString "+splitString);
 		var i=splitString[splitString.length-1];
-		console.log("iiii "+i);
-		// console.log("splitstring "+splitString);
-		if(isInt(i)){
-			// console.log("i++")
-			console.log("i is a integer")
-			
+		if(isInt(i)){			
 			i++;
-			console.log('inside if statement '+i);
-			// console.log("i is now "+i);
 		}else{
-			console.log("i is not a integer")
 			i=1
-			// console.log('i is 1')
 		}
 		var splitString0="";
 		if(splitString.length>1){
 			for(var j=0;j<splitString.length-1;j++){
-				console.log('forfor...')
 				splitString0+=splitString[j]
-				// console.log("j"+j);
-				// console.log('its stuck here');
 			}
 		}else{
 			splitString0=splitString[0];

@@ -26,6 +26,7 @@ class CellComponent extends Component{
 		this.rename=this.rename.bind(this);
 		this.hideContextMenu=this.hideContextMenu.bind(this);
         this.delete=this.delete.bind(this);
+        this.setWrapperRef = this.setWrapperRef.bind(this);
 		// this.state={active:false};
 		// this.state={active:this.props.active};
 		this.state={active:false,condition:'div',value:this.props.value,style:{display:"none"}};
@@ -49,9 +50,12 @@ class CellComponent extends Component{
 	showContextMenu (event) {
       event.preventDefault();
 	  console.log('show')
-      // this.style = {display:"block"};
+      this.style = {display:"block"};
       // this.setState('style',{display:"block"})
-      this.setState({"style":{display:"block"}})
+      this.setState({style:{display:"block"}},()=>{
+           console.log('showcontext ',this.state);
+      })
+     
       // this.contextMenu.style.left = event.clientX + 'px';
       // this.contextMenu.style.top = event.clientY + 'px';
 	  this.forceUpdate();
@@ -61,30 +65,44 @@ class CellComponent extends Component{
 	hideContextMenu (event) {
       
       console.log('hide');
-      
-      
-		// this.style = {display:"none"};
-        this.setState({"style":{display:"none"}})
+        console.log("event ",event.type);
+        if(event.type=="mouseleave"){
+            this.setState({style:{display:"none"}})
+        }
+        
+        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+          // alert('You clicked outside of me!');
+          this.setState({style:{display:"none"}})
+        }
+		
+        
 
     }
 	
 	rename(event){
-      
       console.log('rename');
-      this.setState((prev)=>{
-        return {condition:'input'}
-      });
+      console.log('rename');
+      
+      this.setState({condition:"input"},()=>{
+          console.log(this.state);
+      })
+      
     }
     
 	componentDidMount() {
       document.addEventListener('mousedown', this.hideContextMenu);
     }
-
+    
     componentWillUnmount() {
       document.removeEventListener('mousedown', this.hideContextMenu);
     }
+    
+    setWrapperRef(node) {
+        this.wrapperRef = node;
+      }
 	
 	buttonOnclick(){
+        console.log('button called');
       this.setState((prev)=>{return {condition:'div'}},()=>{
         // console.log(this.state);
       });
@@ -111,6 +129,7 @@ class CellComponent extends Component{
     }
     
 	render(){
+        console.log("state ",this.state);
 		let changeContainer=null;
 	    if(this.state.condition==="div"){
 	      changeContainer=<div 
@@ -135,7 +154,7 @@ class CellComponent extends Component{
 					{this.props.value}
 					<div className="arrow" style={{display:this.state.active?'inline-block':'none'}}></div>
 				</div>*/}
-				<div style={this.state.style} id="contextMenu" className="context-menu">
+				<div ref={this.setWrapperRef} style={this.state.style} id="contextMenu" className="context-menu" >
 		          <ul>
 		            <li onClick={this.rename}>Rename</li>
                     <li onClick={this.delete}>Delete</li>
