@@ -1,0 +1,28 @@
+import * as ActionTypes from './ActionTypes';
+import {addNewNode,appendToNodeNameHelper,appendSequence,renameSequence,deleteSequence,ROOT, Node} from '../shared/knarytree';
+
+var startroot=new Node('root');
+startroot.array.push(new Node("children1"));
+startroot.array.push(new Node("children2"));
+startroot.array[0].array.push(new Node("children3"))// root,children1,children3
+// root.array[0].addInsideFolder('children4');
+startroot.array[1].addInsideFolder('children4');
+
+
+export const Root = (state = { root: startroot}, action) => {
+	console.log(action);
+    switch (action.type) {
+        case ActionTypes.ADD_CELL:
+			var root=appendSequence(state.root,action.payload.sequenceArray,action.payload.newName);
+			console.log("console.log treereducer add cell", root);
+            return {...state, root:root};
+		case ActionTypes.CHANGE_NAME:
+			var root=renameSequence(state.root, action.payload.sequenceArray, action.payload.oldName, action.payload.newName);
+			return {...state, root:root};
+		case ActionTypes.DELETE_CELL:
+			var root=deleteSequence(state.root, action.payload.sequenceArray, action.payload.oldName);
+			return {...state, root:root};
+        default:
+            return state;
+    }
+};
