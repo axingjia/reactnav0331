@@ -15,7 +15,9 @@ export class LevelComponent extends Component{
 	            {/*<div style={{overflowY:"scroll",height:"inherit"}}>}*/}
 	            
 	            {this.props.arrayOfValue.map(function(current,index){
-	                return <CellComponent key={index}value={current.name} active={current.active} archSequenceArray={this.props.archSequenceArray} setUpdate={this.props.setUpdate}></CellComponent>;
+	                return <CellComponent key={index} value={current.name} active={current.active} archSequenceArray={this.props.archSequenceArray} setUpdate={this.props.setUpdate}
+					setActiveSequence={this.props.setActiveSequence}
+					></CellComponent>;
 	            },this)}
 	            {/*</div>*/}
 	            

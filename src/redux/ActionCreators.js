@@ -18,6 +18,39 @@ export const deleteCell=(sequenceArray,oldName)=>({
 		oldName:oldName
 	}
 })
+
+export const showDir=(sequenceArray,name)=>({
+	type:ActionTypes.SHOW_DIR,
+	payload:{
+		sequenceArray:sequenceArray,
+		name:name
+	}
+})
+
+export const hideDir=(sequenceArray,name)=>({
+	type:ActionTypes.HIDE_DIR,
+	payload:{
+		sequenceArray:sequenceArray,
+		name:name
+	}
+})
+
+export const clearAllOtherArrow=(sequenceArray,name)=>({
+	type:ActionTypes.CLEAR_ALL_OTHER_ARROW,
+	payload:{
+		sequenceArray:sequenceArray,
+		name:name
+	}
+})
+
+export const addArrow=(sequenceArray,name)=>({
+	type:ActionTypes.ADD_ARROW,
+	payload:{
+		sequenceArray:sequenceArray,
+		name:name
+	}
+})
+
 // 
 // export const addToRoot=(newNodeName)=>({
 // 	type:ActionTypes.ADD_CELL,

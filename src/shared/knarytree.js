@@ -38,16 +38,19 @@ export function appendSequence(node,sequenceArray,newName){
 		}
 		// currentNode.addInsideFolder(newName);
 	}else if(sequenceArray.length>1){
+		console.log('sequencearray ',sequenceArray);
+		console.log('newName ', newName);
 		for(var i=1;i<sequenceArray.length;i++){
 			currentNode=currentNode.array[sequenceArray[i]];
 			console.log('appendsequence ',currentNode);
 		}
-		// currentNode.addInsideFolder(newName);
+		console.log("currentNode array ",currentNode.array);
 		if(folderExist(currentNode.array,newName)){
 			// alert("duplicate at position "+folderExist(currentNode.array,newName));
 			newName=appendIndexToNodeName(currentNode.array,newName);
 			currentNode.addInsideFolder(newName);
 		}else{
+			console.log('folder doesnt exist');
 			currentNode.addInsideFolder(newName);
 		}
 		
@@ -61,7 +64,7 @@ export function deleteSequence(node,sequenceArray,oldName){
 		currentNode.deleteNameInArray(oldName);
 	}else if(sequenceArray.length>1){
 		for(var i=1;i<sequenceArray.length;i++){
-			console.log("current",currentNode);
+			// console.log("current",currentNode);
 			currentNode=currentNode.array[sequenceArray[i]];
 		}
 		currentNode.deleteNameInArray(oldName);
@@ -77,15 +80,15 @@ export function renameSequence(node,sequenceArray,oldName,newName){
 		return node;
 	}
 	if(sequenceArray.length==1){
-		console.log('current inside knarytree',currentNode);
-		console.log("old ",oldName, " new ",newName)
+		// console.log('current inside knarytree',currentNode);
+		// console.log("old ",oldName, " new ",newName)
 		if(folderExist(currentNode.array,newName)){
 			alert("duplicate at position "+folderExist(currentNode.array,newName));
 		}else{
 			currentNode.renameAInsideNode(oldName,newName);
 		}
 		
-		console.log('current inside knarytree after',currentNode);
+		// console.log('current inside knarytree after',currentNode);
 	}else if(sequenceArray.length>1){
 		for(var i=1;i<sequenceArray.length;i++){
 			console.log('current ', currentNode);
@@ -98,14 +101,14 @@ export function renameSequence(node,sequenceArray,oldName,newName){
 		}
 		// currentNode.renameAInsideNode(oldName,newName);
 	}
-	console.log('rename,', node);
+	// console.log('rename,', node);
 	return node;
 }
 
 export function folderExist(array,newName){
 	 for(var i=0;i<array.length;i++){
 		 if(array[i].name==newName){
-			 return i;
+			 return true;
 		 }
 	 }
 	 return false;
@@ -115,7 +118,7 @@ function appendIndexToNodeName(array,name){
 	
 	var i=0;
 	var temp_name=name;
-	// console.log("temp_name "+temp_name)
+	console.log("temp_name "+temp_name)
 	while(folderExist(array,temp_name)){
 		var splitString=temp_name.split("_");
 		var i=splitString[splitString.length-1];
@@ -136,8 +139,8 @@ function appendIndexToNodeName(array,name){
 		
 		// console.log("splitString0 "+splitString0);
 		temp_name=splitString0+"_"+i;
-		console.log('temp_name after '+temp_name)
-		console.log("===============")
+		// console.log('temp_name after '+temp_name)
+		// console.log("===============")
 	}
 	return temp_name;
 }
@@ -148,30 +151,99 @@ export function isInt(value) {
 	         !isNaN(parseInt(value, 10));
 }
 
+export function showDir(node,sequenceArray,name){
+	var newActiveSequence=sequenceArray;
+	var currentNode=node;
+	var index=99;
+	if(newActiveSequence.length==1){//the sequence
+		for (var j=0;j<currentNode.array.length;j++){
+			if(currentNode.array[j].name==name){
+				index=j;
+				newActiveSequence.push(index);
+				break;
+			}
+		}
+	}else if(sequenceArray.length>1){
+		for(var i=1;i<newActiveSequence.length;i++){
+			currentNode=currentNode.array[newActiveSequence[i]];
+		}
+		for (var j=0;j<currentNode.array.length;j++){
+			if(currentNode.array[j].name==name){
+				console.log()
+				index=j;
+				newActiveSequence.push(index);
+				break;
+			}
+		}
+		
+	}
+	return newActiveSequence;
+	
+}
 
-export function appendToNodeNameHelper(root,oldName,newName){
-	//recursively search the root and then the children of the root, and then the children of children
-	if(root.array.length==0 && root.name!=oldName){
-		return false;
-	}else{
-		if(oldName==root.name){
-			var newNode=new Node(newName);
-			// newNode.parent=root;
-			root.array.push(newNode);
-			return root;
-		}else{
-			for(var i=0;i<root.array.length;i++){
-				appendToNodeNameHelper(root.array[i],oldName,newName);
+export function hideDir(node,sequenceArray,name){
+	return sequenceArray;
+	
+}
+
+
+export function addArrowAndClearArrow(node,sequenceArray,name){
+	console.log('inside addarrow');
+	var currentNode=node;
+	if(sequenceArray.length==1){//the sequence
+		for (var j=0;j<currentNode.array.length;j++){
+			if(currentNode.array[j].name==name){
+				currentNode.array[j].active=true;
+				// alert('something changes to true!');
+			}else{
+				currentNode.array[j].active=false;
+			}
+		}
+	}else if(sequenceArray.length>1){
+		for(var i=1;i<sequenceArray.length;i++){
+			currentNode=currentNode.array[sequenceArray[i]];
+		}
+		for (var j=0;j<currentNode.array.length;j++){
+			if(currentNode.array[j].name==name){
+				currentNode.array[j].active=true;
+				// alert('something changes to true!');
+			}else{
+				currentNode.array[j].active=false;
 			}
 			
 		}
 		
-	}
+		
+		
+	} 
+	console.log("inside knary current node",currentNode);
+	console.log("node ",node);
+	return node;
 }
-export function addNewNode(oldName,newName){
-	var newRoot=appendToNodeNameHelper(root,oldName,newName);
-	return newRoot;
-}
+
+// export function appendToNodeNameHelper(root,oldName,newName){
+// 	//recursively search the root and then the children of the root, and then the children of children
+// 	if(root.array.length==0 && root.name!=oldName){
+// 		return false;
+// 	}else{
+// 		if(oldName==root.name){
+// 			var newNode=new Node(newName);
+// 			// newNode.parent=root;
+// 			root.array.push(newNode);
+// 			return root;
+// 		}else{
+// 			for(var i=0;i<root.array.length;i++){
+// 				appendToNodeNameHelper(root.array[i],oldName,newName);
+// 			}
+// 
+// 		}
+// 
+// 	}
+// }
+// export function addNewNode(oldName,newName){
+// 	var newRoot=appendToNodeNameHelper(root,oldName,newName);
+// 	return newRoot;
+// }
 
 // export function unFlagAllByParentHelper(root,parentNodeName){
 // 	//recursively search the root and then the children of the root, and then the children of children
